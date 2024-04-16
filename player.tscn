@@ -1,0 +1,89 @@
+[gd_scene load_steps=11 format=3 uid="uid://c6p7tj3ikulga"]
+
+[ext_resource type="Texture2D" uid="uid://ddioyr1pu232w" path="res://sprites/swordsman.png" id="1_78yhp"]
+[ext_resource type="Script" path="res://Player.cs" id="1_y5t7w"]
+[ext_resource type="Texture2D" uid="uid://b4dq8avvjqdht" path="res://sprites/sword_effects_3.png" id="3_cbdqt"]
+[ext_resource type="Texture2D" uid="uid://dwynchm2c6bka" path="res://sprites/sword_effects_4.png" id="4_d5tqx"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cdjee"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_78yhp")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Curve2D" id="Curve2D_uvyfs"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 93, -650, 0, 0, 0, 0, 1069, -648.36, 0, 0, 0, 0, 1078, 511, 0, 0, 0, 0, 668, 494.602, 0, 0, 0, 0, -1131, 501.981, 0, 0, 0, 0, -1134, -18, 0, 0, 0, 0, -1113, -636.881, 0, 0, 0, 0, -60, -645, 0, 0, 0, 0, 93, -650)
+}
+point_count = 9
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_txipw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_cbdqt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_d5tqx")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hi3kp"]
+size = Vector2(6, 57)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f0myb"]
+size = Vector2(6, 57)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2a1ub"]
+radius = 11.0
+height = 44.0
+
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(549, 300)
+script = ExtResource("1_y5t7w")
+Speed = 200
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.02, 0.02)
+sprite_frames = SubResource("SpriteFrames_cdjee")
+
+[node name="MobSpawnPath" type="Path2D" parent="."]
+position = Vector2(79.462, 96.5082)
+scale = Vector2(1.07007, 1.32386)
+curve = SubResource("Curve2D_uvyfs")
+
+[node name="MobSpawnLocation" type="PathFollow2D" parent="MobSpawnPath"]
+position = Vector2(93, -650)
+rotation = 0.00168034
+
+[node name="BasicAttack" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.02, 0.02)
+sprite_frames = SubResource("SpriteFrames_txipw")
+frame_progress = 0.466567
+
+[node name="BasicAttackTimer" type="Timer" parent="."]
+
+[node name="BasicAttackRightHitBox" type="CollisionShape2D" parent="."]
+position = Vector2(14, -0.5)
+shape = SubResource("RectangleShape2D_hi3kp")
+
+[node name="BasicAttackLeftHitBox" type="CollisionShape2D" parent="."]
+position = Vector2(-17, -0.5)
+shape = SubResource("RectangleShape2D_f0myb")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="PlayerHitBox" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-3, 5)
+shape = SubResource("CapsuleShape2D_2a1ub")
+
+[connection signal="timeout" from="BasicAttackTimer" to="." method="OnBasicAttackTimerTimeout"]

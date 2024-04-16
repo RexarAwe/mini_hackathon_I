@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://b2rrs6y8ysbnp"]
+
+[ext_resource type="Script" path="res://Main.cs" id="1_s3uv1"]
+[ext_resource type="PackedScene" uid="uid://d1dfrhr0o05ow" path="res://enemy.tscn" id="2_3xbqs"]
+[ext_resource type="PackedScene" uid="uid://c6p7tj3ikulga" path="res://player.tscn" id="3_5bxgv"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_s3uv1")
+EnemyScene = ExtResource("2_3xbqs")
+
+[node name="Player" parent="." instance=ExtResource("3_5bxgv")]
+position = Vector2(531, 301)
+
+[node name="MobTimer" type="Timer" parent="."]
+wait_time = 5.0
+
+[node name="DifficultyTimer" type="Timer" parent="."]
+wait_time = 10.0
+
+[connection signal="timeout" from="MobTimer" to="." method="OnMobTimerTimeout"]
+[connection signal="timeout" from="DifficultyTimer" to="." method="OnDifficultyTimerTimeout"]
